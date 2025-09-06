@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>0 level</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&family=Roboto&display=swap');
+
+  body {
+    margin: 0;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    font-family: 'Roboto', sans-serif;
+    color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+
+  .container {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    max-width: 700px;
+    width: 100%;
+    padding: 30px 40px;
+    backdrop-filter: blur(12px);
+  }
+
+  h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    letter-spacing: 1.2px;
+    color: #ffd700;
+    text-shadow: 0 0 8px #ffd700aa;
+  }
+
+  #latestPeriod {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #00ff99;
+    text-align: center;
+    margin-bottom: 40px;
+    letter-spacing: 3px;
+    text-shadow:
+      0 0 5px #00ff99,
+      0 0 10px #00ff99,
+      0 0 20px #00ff99,
+      0 0 40px #00ff99;
+  }
+
+  .prediction-box {
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    border-radius: 15px;
+    padding: 25px 30px;
+    box-shadow: 0 0 20px #00ff99aa;
+    margin-bottom: 50px;
+  }
+
+  .prediction-box div {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #e0e0e0;
+  }
+
+  #predictionPeriod {
+    font-weight: 700;
+    font-size: 2rem;
+    color: #00e676;
+    letter-spacing: 2px;
+    text-shadow:
+      0 0 5px #00e676,
+      0 0 10px #00e676;
+  }
+
+  #predictionSignal {
+    font-weight: 800;
+    font-size: 2.5rem;
+    padding: 10px 25px;
+    border-radius: 50px;
+    display: inline-block;
+    min-width: 140px;
+    box-shadow: 0 0 15px #ff4081;
+    transition: all 0.3s ease;
+  }
+
+  #predictionSignal.BIG {
+    background: #00c853;
+    color: #e0ffe0;
+    box-shadow:
+      0 0 10px #00c853,
+      0 0 20px #00c853;
+  }
+
+  #predictionSignal.SMALL {
+    background: #d50000;
+    color: #ffe0e0;
+    box-shadow:
+      0 0 10px #d50000,
+      0 0 20px #d50000;
+  }
+
+  #predictionSignal.NEUTRAL {
+    background: #ffab00;
+    color: #fff8e1;
+    box-shadow:
+      0 0 10px #ffab00,
+      0 0 20px #ffab00;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px;
+    font-size: 1rem;
+    color: #ddd;
+  }
+
+  thead tr {
+    background: #222;
+    border-radius: 12px;
+  }
+
+  thead th {
+    padding: 12px 15px;
+    text-align: center;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #ffd700;
+    text-shadow: 0 0 5px #ffd700aa;
+  }
+
+  tbody tr {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    transition: background 0.3s ease;
+  }
+
+  tbody tr:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  tbody td {
+    padding: 12px 15px;
+    text-align: center;
+    font-weight: 600;
+    border-radius: 12px;
+  }
+
+  tbody td.color-cell {
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  tbody td.color-red {
+    color: #ff1744;
+    text-shadow: 0 0 5px #ff1744aa;
+  }
+
+  tbody td.color-green {
+    color: #00e676;
+    text-shadow: 0 0 5px #00e676aa;
+  }
+
+  tbody td.color-yellow {
+    color: #ffd600;
+    text-shadow: 0 0 5px #ffd600aa;
+  }
+
+  /* Scroll for smaller screens */
+  @media (max-width: 480px) {
+    .container {
+      padding: 20px 15px;
+    }
+    #latestPeriod {
+      font-size: 2rem;
+    }
+    #predictionSignal {
+      font-size: 2rem;
+      min-width: 110px;
+      padding: 8px 18px;
+    }
+    table {
+      font-size: 0.9rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container" role="main" aria-label="Prediction and Latest History Panel">
+
+  <h2>Latest Period number</h2>
+  <div id="latestPeriod" aria-live="polite" aria-atomic="true" aria-relevant="text">লোড হচ্ছে...</div>
+
+  <div class="prediction-box" aria-label="Prediction Box">
+    <div>Prediction Period: <span id="predictionPeriod" aria-live="polite" aria-atomic="true">-</span></div>
+    <div>Prediction Signal: <span id="predictionSignal" aria-live="polite" aria-atomic="true" class="">-</span></div>
+  </div>
+
+  <h2>Last 10 results</h2>
+  <table aria-describedby="resultsDescription" role="table">
+    <caption id="resultsDescription" class="sr-only">Last 10 Period results</caption>
+    <thead>
+      <tr>
+        <th scope="col">Period Number</th>
+        <th scope="col">Number</th>
+        <th scope="col">Color</th>
+        <th scope="col">Premium</th>
+      </tr>
+    </thead>
+    <tbody id="resultsTableBody">
+      <tr><td colspan="4" style="color:#aaa;">loading...</td></tr>
+    </tbody>
+  </table>
+
+</div>
+
+<script>
+  const apiUrl = 'https://draw.ar-lottery01.com/WinGo/WinGo_30S/GetHistoryIssuePage.json';
+
+  function bigOrSmall(num) {
+    return num >= 5 ? 'BIG' : 'SMALL';
+  }
+
+  // Update prediction signal style class
+  function updateSignalClass(signalEl, signal) {
+    signalEl.classList.remove('BIG', 'SMALL', 'NEUTRAL');
+    if (signal === 'BIG') signalEl.classList.add('BIG');
+    else if (signal === 'SMALL') signalEl.classList.add('SMALL');
+    else signalEl.classList.add('NEUTRAL');
+  }
+
+  async function fetchAndUpdate() {
+    try {
+      const response = await fetch(apiUrl, {cache: "no-store"});
+      if (!response.ok) throw new Error('Network response was not ok');
+      const data = await response.json();
+      const list = data.data.list;
+
+      if (!list || list.length === 0) {
+        throw new Error('No data received');
+      }
+
+      // Latest Period Number
+      const latestPeriodNumber = list[0].issueNumber;
+      const latestPeriodEl = document.getElementById('latestPeriod');
+      latestPeriodEl.textContent = latestPeriodNumber;
+
+      // Prediction Period Number (increment last 5 digits)
+      const prefix = latestPeriodNumber.slice(0, -5);
+      const lastFive = latestPeriodNumber.slice(-5);
+      const incremented = (parseInt(lastFive, 10) + 1).toString().padStart(5, '0');
+      const predictionPeriodNumber = prefix + incremented;
+      const predictionPeriodEl = document.getElementById('predictionPeriod');
+      predictionPeriodEl.textContent = predictionPeriodNumber;
+
+      // Last 40 results for trend
+      const last40 = list.slice(0, 40);
+
+      // Last 5 results BIG/SMALL count
+      const last5 = last40.slice(0, 5);
+      let bigCount = 0;
+      let smallCount = 0;
+      last5.forEach(item => {
+        if (bigOrSmall(parseInt(item.number, 10)) === 'BIG') bigCount++;
+        else smallCount++;
+      });
+
+      // Check pattern BIG SMALL BIG SMALL in last 4
+      const last4 = last40.slice(0, 4);
+      const pattern = last4.map(item => bigOrSmall(parseInt(item.number, 10))).join(' ');
+      const patternSignal = pattern === 'BIG SMALL BIG SMALL';
+
+      // Determine prediction signal
+      let predictionSignal = '';
+      if (patternSignal) {
+        // Follow last result's BIG/SMALL
+        predictionSignal = bigOrSmall(parseInt(last40[0].number, 10));
+      } else {
+        if (bigCount > smallCount) predictionSignal = 'BIG';
+        else if (smallCount > bigCount) predictionSignal = 'SMALL';
+        else predictionSignal = 'NEUTRAL';
+      }
+
+      const predictionSignalEl = document.getElementById('predictionSignal');
+      predictionSignalEl.textContent = predictionSignal;
+      updateSignalClass(predictionSignalEl, predictionSignal);
+
+      // Update last 10 results table
+      const last10 = list.slice(0, 10);
+      const tbody = document.getElementById('resultsTableBody');
+      tbody.innerHTML = '';
+      last10.forEach(item => {
+        const tr = document.createElement('tr');
+
+        // Color cell styling based on color text
+        let colorClass = '';
+        if (item.color.toLowerCase() === 'red') colorClass = 'color-red';
+        else if (item.color.toLowerCase() === 'green') colorClass = 'color-green';
+        else if (item.color.toLowerCase() === 'yellow') colorClass = 'color-yellow';
+
+        tr.innerHTML = `
+          <td>${item.issueNumber}</td>
+          <td>${item.number}</td>
+          <td class="color-cell ${colorClass}">${item.color}</td>
+          <td>${item.premium}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+    } catch (error) {
+      console.error('Error fetching or processing data:', error);
+      const latestPeriodEl = document.getElementById('latestPeriod');
+      latestPeriodEl.textContent = 'ডেটা লোড করতে সমস্যা হয়েছে';
+
+      const predictionPeriodEl = document.getElementById('predictionPeriod');
+      predictionPeriodEl.textContent = '-';
+
+      const predictionSignalEl = document.getElementById('predictionSignal');
+      predictionSignalEl.textContent = '-';
+      updateSignalClass(predictionSignalEl, '');
+
+      const tbody = document.getElementById('resultsTableBody');
+      tbody.innerHTML = `<tr><td colspan="4" style="color:#ff6b6b; text-align:center;">ডেটা লোড করতে সমস্যা হয়েছে</td></tr>`;
+    }
+  }
+
+  // Initial fetch and intervals
+  fetchAndUpdate();
+  setInterval(fetchAndUpdate, 1000); // 1 second refresh for latest period and results
+  setInterval(fetchAndUpdate, 2000); // 2 second refresh for prediction signal (redundant but safe)
+
+</script>
+
+</body>
+</html>
